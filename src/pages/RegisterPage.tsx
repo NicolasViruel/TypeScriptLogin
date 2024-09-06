@@ -1,34 +1,31 @@
-import axios from "../libs/axios";
 import { RiMailFill } from "react-icons/ri";
 import { RiHandbagFill } from "react-icons/ri";
 import { RiCloseFill } from "react-icons/ri";
 import { RiUserFill  } from "react-icons/ri";
+import { registerRequest } from "../api/auth";
+import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
+  const navigate = useNavigate()
+
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const username = (e.currentTarget[0] as HTMLInputElement).value;
     const email = (e.currentTarget.elements[1] as HTMLInputElement).value;
     const password = (e.currentTarget.elements[2] as HTMLInputElement).value;
 
-    const resRegister = {
-      username,
-      email,
-      password,
-    };
+    
 
     try {
-      const res = await axios.post("api/auth/singup", resRegister);
+      const res = await registerRequest(username, email, password);
       console.log(res);
+      navigate("/login");
     } catch (error) {
       console.log(error);
     }
   };
 
-//   function resetForm() {
-//       console.log("reseteando formulario");
-
-//   }
 
   return (
     <>
@@ -82,16 +79,6 @@ const RegisterPage = () => {
         </div>
       </div>
     </>
-
-    // <form onSubmit={handleSubmit}>
-    //     <input type="text" placeholder="Name" />
-    //     <input type="email" placeholder="email@email.com" />
-    //     <input type="password" placeholder="*********" />
-    //     <div>
-    //         <input type="button" value="Reset Form" onClick={() => resetForm()}/>
-    //     </div>
-
-    // </form>
   );
 };
 
